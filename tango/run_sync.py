@@ -20,7 +20,7 @@ class S3DirSync:
         self.client = aws_session.client('s3')
 
     def start(self, s3_dir:[str], local_dir:[str], check_period:[int]=300,
-              callback_func=None, callback_threshold:[int]=None):
+              callback_func=None, callback_threshold:[int]=None, ignore_update_by_init=True):
         # directory parameter formatting
         self.s3_dir, self.local_dir = self._dir_format(s3_dir, local_dir)
 
@@ -46,20 +46,22 @@ class S3DirSync:
 
             # download updated data
             if len(update_list) > 0:
-                update_trd = threading.Thread(target=self._update, args=(update_list, callback_func, callback_threshold),
+                update_trd = threading.Thread(target=self._update,
+                                              args=(update_list, callback_func, callback_threshold, ignore_update_by_init),
                                               daemon=True, name='update')
                 update_trd.start()
+                ignore_update_by_init = False
 
             # wait for the next period
             sleep(check_period)
 
-    def _update(self, update_list, callback_func, callback_threshold):
+    def _update(self, update_list, callback_func, callback_threshold, ignore_update=False):
         # download with multi threads if the number of data is bigger than 1000.
         trd_list = []
         num_trd = min(len(update_list) // 1000, 7) + 1 # maximum number of threads is 8.
 
         # decision for whether to run callback or not
-        self.num_update += len(update_list)
+        if not ignore_update: self.num_update += len(update_list)
         run_callback = False
         if callback_func != None and callback_threshold != None:            # if callback is given
             if self.num_update >= callback_threshold:                       # if num_update is enough for callback
