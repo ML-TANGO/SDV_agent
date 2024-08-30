@@ -50,7 +50,7 @@ class S3DirSync:
                                               args=(update_list, callback_func, callback_threshold, ignore_update_by_init),
                                               daemon=True, name='update')
                 update_trd.start()
-                ignore_update_by_init = False
+            ignore_update_by_init = False
 
             # wait for the next period
             sleep(check_period)
