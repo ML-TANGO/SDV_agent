@@ -4,6 +4,7 @@ Repository for SDV agent
 
 Prerequisite
 ---
+Before using the module in this repository, you need to prepare the below information on AWS.
 - S3 BUCKET NAME
 - AWS ACCESS KEY ID
 - AWS SECRET ACCESS KEY
