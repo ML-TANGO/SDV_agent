@@ -12,10 +12,11 @@ Before using the module in this repository, you need to prepare the below inform
 How to Start Data Upload
 ---
 1. Save the image files to /SDV_agent/data/images folder for analysis
-2. Excute the below
+2. Run the command below (If you get a 'permission denied' error, use `sudo`)
 ```sh
 sh start.sh
 ```
+3. Insert the AWS information following the instructions
 
 Data Download API
 ---
